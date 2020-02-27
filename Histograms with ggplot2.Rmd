@@ -1,0 +1,97 @@
+---
+title: "Histograms with ggplot2"
+author: "Data Science Koding"
+date: "2/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages('ggplot2')
+#install.packages('datasets')
+library(ggplot2)
+library(datasets)
+```
+
+
+Start by loading the dataset
+```{r load data}
+data = datasets::mtcars
+str(data)
+```
+
+Take a look at the first 10 rows of the dataset
+```{r head}
+head(data, 10)
+```
+
+
+Take a look at the row names
+```{r row names}
+str(rownames(data))
+```
+
+
+Are all cars distinct? - yes
+```{r distinct cars?}
+length(unique(rownames(data)))
+```
+
+
+Start creating the histogram - stat = 'identity'
+```{r histogram 1}
+histogram_1 = ggplot(data = data,
+                     aes(x = rownames(data), y = mpg)) +
+  geom_histogram(stat = 'identity') +
+  ylab("MPG") +
+  xlab('Car Model') +
+  ggtitle('MPG by Car Model')
+histogram_1
+```
+
+
+fix up histogram 1
+```{r histogram 2}
+histogram_2 = ggplot(data = data,
+                     aes(x = rownames(data), y = mpg)) +
+  geom_histogram(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 90)) +
+  ylab("MPG") +
+  xlab('Car Model') +
+  ggtitle('MPG by Car Model')
+histogram_2
+```
+
+
+Adding to histogram 2
+```{r histogram 3}
+histogram_3 = ggplot(data = data,
+                     aes(x = reorder(rownames(data), -mpg), y = mpg, fill = mpg))+
+  geom_histogram(stat = 'identity') +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  ylab("MPG") +
+  xlab('Car Model') +
+  ggtitle('MPG by Car Model')
+histogram_3
+```
+
+
+Histogram 3 rotated
+```{r histogram 4}
+histogram_4 = histogram_3 + coord_flip()
+histogram_4
+```
+
+
+Start creating the histogram - stat = 'count'
+```{r histogram 5}
+histogram_5 = ggplot(data, aes(x = cyl)) +
+  geom_histogram(stat = 'count') +
+  theme_classic() +
+  xlab('Cylinders') +
+  ylab('Count') +
+  ggtitle('Cylinder Distribution')
+histogram_5
+```
+
